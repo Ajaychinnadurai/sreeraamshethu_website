@@ -19,7 +19,7 @@ export const setAccessToken = (token) => {
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
-  if (token && !token.startsWith("demo-")) {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

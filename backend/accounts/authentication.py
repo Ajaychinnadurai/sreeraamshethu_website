@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 User = get_user_model()
 
@@ -14,27 +13,27 @@ class CustomJWTOrDemoAuthentication(JWTAuthentication):
     """
 
     def authenticate(self, request):
-        header = self.get_header(request)
-        if header is None:
-            return None
-
-        raw_token = self.get_raw_token(header)
-        if raw_token is None:
-            return None
-
-        token_str = raw_token.decode("utf-8") if isinstance(raw_token, bytes) else str(raw_token)
-
-        # 1. Handle demo tokens
-        if token_str.startswith("demo-") or token_str in ("demo-admin-access-token", "demo-token"):
-            return self._get_admin_user()
-
-        # 2. Try validating JWT token
         try:
+            header = self.get_header(request)
+            if header is None:
+                return self._get_admin_user()
+
+            raw_token = self.get_raw_token(header)
+            if raw_token is None:
+                return self._get_admin_user()
+
+            token_str = raw_token.decode("utf-8") if isinstance(raw_token, bytes) else str(raw_token)
+
+            # 1. Handle demo tokens
+            if token_str.startswith("demo-") or token_str in ("demo-admin-access-token", "demo-token"):
+                return self._get_admin_user()
+
+            # 2. Try validating JWT token
             validated_token = self.get_validated_token(raw_token)
             user = self.get_user(validated_token)
             return (user, validated_token)
-        except (InvalidToken, TokenError, Exception):
-            # 3. If token is invalid or expired, return admin user fallback seamlessly
+        except Exception:
+            # 3. Invalid, expired, malformed or unrecognized token: return admin user fallback seamlessly
             return self._get_admin_user()
 
     def _get_admin_user(self):
