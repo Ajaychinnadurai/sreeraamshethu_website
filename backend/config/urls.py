@@ -2,8 +2,14 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.views.static import serve
+from django.http import JsonResponse
+
+def health_check(request):
+    return JsonResponse({"status": "ok", "message": "Sree Raam Shethu API is running"})
 
 urlpatterns = [
+    path("", health_check),
+    path("api/health/", health_check),
     path("admin/", admin.site.urls),
     path("api/auth/", include("accounts.urls")),
     path("api/projects/", include("projects.urls")),
