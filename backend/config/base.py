@@ -129,6 +129,15 @@ CORS_ALLOWED_ORIGINS = env.list(
 )
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+    "https://sreeraamshethu-website.onrender.com",
+    "https://*.vercel.app",
+    "https://frontend-seven-jade-63.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
 # WhatsApp / contact configuration (overridable via env)
 WHATSAPP_NUMBER = env.str("WHATSAPP_NUMBER", default="+919566615030")
 CONTACT_PHONE = env.str("CONTACT_PHONE", default="+91 95666 15030")
