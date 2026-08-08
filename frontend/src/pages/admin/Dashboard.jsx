@@ -15,45 +15,37 @@ const STAT_CARDS = [
   { key: "documents", label: "Uploaded Docs", icon: FileText, color: "gray" },
 ];
 
-const DEFAULT_DATA = {
-  counts: {
-    projects: 5,
-    clients: 2,
-    inquiries: 3,
-    new_inquiries: 1,
-    appointments: 2,
-    pending_appointments: 1,
-    testimonials: 3,
-    documents: 1,
-  },
-  recent_inquiries: [
-    { id: 1, full_name: "Meera Raman", project_type: "Residential", phone: "+91 91234 56789", status: "New" },
-    { id: 2, full_name: "Arun Prakash", project_type: "Interior", phone: "+91 90000 11111", status: "In Progress" },
-  ],
-  recent_appointments: [
-    { id: 1, full_name: "Ravi Kumar", date: "2026-08-15", time_slot: "11:00 AM", status: "Approved" },
-  ],
-};
-
 export default function AdminDashboard() {
-  const [data, setData] = useState(DEFAULT_DATA);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
 
   useEffect(() => {
     let active = true;
     api
       .get("/dashboard/admin/")
       .then((res) => {
-        if (active && res.data) setData(res.data);
+        if (active) {
+          setData(res.data);
+          setLoading(false);
+        }
       })
       .catch(() => {
-        if (active) setData(DEFAULT_DATA);
+        if (active) {
+          setErr("Unable to connect to live backend database.");
+          setLoading(false);
+        }
       });
     return () => {
       active = false;
     };
   }, []);
 
-  const c = data.counts || DEFAULT_DATA.counts;
+  if (loading) return <div className="dash-pad muted">Connecting to live database...</div>;
+
+  const c = data?.counts || {};
+  const recentInquiries = data?.recent_inquiries || [];
+  const recentAppointments = data?.recent_appointments || [];
 
   return (
     <>
@@ -65,7 +57,7 @@ export default function AdminDashboard() {
             <span className="admin-hero-card__badge">ADMINISTRATION</span>
             <h1 className="admin-hero-card__title">Executive Dashboard</h1>
             <p className="admin-hero-card__sub muted">
-              Real-time metric monitoring across active builds, client accounts, site enquiries and appointments.
+              Real-time live database metrics across active builds, client accounts, site enquiries and appointments.
             </p>
           </div>
           <div className="admin-hero-card__actions">
@@ -77,6 +69,8 @@ export default function AdminDashboard() {
             </Link>
           </div>
         </header>
+
+        {err && <div className="form-note form-note--err">{err}</div>}
 
         {/* KPI Stat Cards Grid */}
         <div className="stat-grid admin-stats">
@@ -101,9 +95,9 @@ export default function AdminDashboard() {
               <h2 className="dash-card__title">Recent Enquiries</h2>
               <Link to="/admin/inquiries" className="btn btn--ghost btn--sm">Manage</Link>
             </div>
-            {(!data.recent_inquiries || data.recent_inquiries.length === 0) && <p className="muted">No enquiries logged.</p>}
+            {recentInquiries.length === 0 && <p className="muted">No live enquiries in database.</p>}
             <div className="admin-list">
-              {data.recent_inquiries?.map((i) => (
+              {recentInquiries.map((i) => (
                 <div key={i.id} className="row-item">
                   <div>
                     <strong>{i.full_name}</strong>
@@ -122,9 +116,9 @@ export default function AdminDashboard() {
               <h2 className="dash-card__title">Recent Appointments</h2>
               <Link to="/admin/appointments" className="btn btn--ghost btn--sm">Manage</Link>
             </div>
-            {(!data.recent_appointments || data.recent_appointments.length === 0) && <p className="muted">No upcoming appointments.</p>}
+            {recentAppointments.length === 0 && <p className="muted">No upcoming appointments in database.</p>}
             <div className="admin-list">
-              {data.recent_appointments?.map((a) => (
+              {recentAppointments.map((a) => (
                 <div key={a.id} className="row-item">
                   <div>
                     <strong>{a.full_name || a.client_name || `Booking #${a.id}`}</strong>

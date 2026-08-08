@@ -19,59 +19,38 @@ function ProgressBar({ pct }) {
   );
 }
 
-const DEFAULT_CLIENT_DATA = {
-  user: { full_name: "Ravi Kumar", username: "client" },
-  projects: [
-    {
-      project: {
-        id: 1,
-        title: "The Coastal Residence",
-        category: "Residential",
-        location: "Rameswaram, Tamil Nadu",
-        status: "In Progress",
-        completion_percentage: 85,
-        current_phase: "Interior Woodwork & Detailing",
-      },
-      milestones: [
-        { id: 1, title: "Site Assessment & Layout", completed: true },
-        { id: 2, title: "Foundation & RCC Framing", completed: true },
-        { id: 3, title: "Brickwork & Plastering", completed: true },
-        { id: 4, title: "Interior Finishing & Electricals", completed: false },
-      ],
-      updates: [
-        { id: 1, title: "Custom Teak Doors Installed", body: "Teak door frames and warm LED ceiling light fixtures completed.", created_at: "2026-08-01" },
-      ],
-      documents: [
-        { id: 1, title: "Architectural Blueprint", doc_type: "PDF", url: "#" },
-      ],
-    },
-  ],
-  appointments: [
-    { id: 1, date: "2026-08-15", time_slot: "11:00 AM", purpose: "Site Inspection & Finish Review", status: "Approved" },
-  ],
-};
-
 export default function Dashboard() {
-  const [data, setData] = useState(DEFAULT_CLIENT_DATA);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
     api
       .get("/dashboard/client/")
       .then((res) => {
-        if (active && res.data) setData(res.data);
+        if (active) {
+          setData(res.data);
+          setLoading(false);
+        }
       })
-      .catch(() => {
-        if (active) setData(DEFAULT_CLIENT_DATA);
+      .catch((e) => {
+        if (active) {
+          setError(e.response?.data?.detail || "Unable to load client portal data.");
+          setLoading(false);
+        }
       });
     return () => {
       active = false;
     };
   }, []);
 
-  const user = data.user || DEFAULT_CLIENT_DATA.user;
-  const projects = data.projects || DEFAULT_CLIENT_DATA.projects;
-  const appointments = data.appointments || DEFAULT_CLIENT_DATA.appointments;
+  if (loading) return <div className="dash-pad muted">Loading your live dashboard...</div>;
+  if (error) return <div className="dash-pad form-note form-note--err">{error}</div>;
+
+  const user = data?.user || {};
+  const projects = data?.projects || [];
+  const appointments = data?.appointments || [];
 
   const totalProgress = projects.reduce((sum, pr) => sum + (Number(pr.project?.completion_percentage) || 0), 0);
   const avgProgress = projects.length ? Math.round(totalProgress / projects.length) : 0;
@@ -125,6 +104,24 @@ export default function Dashboard() {
             <div className="stat-card__label muted">Documents</div>
           </div>
         </div>
+
+        {/* Empty State when no project assigned */}
+        {projects.length === 0 && (
+          <section className="client-empty-card">
+            <div className="client-empty-card__icon">
+              <Building2 size={32} />
+            </div>
+            <h2>Welcome to your Project Workspace</h2>
+            <p className="muted">
+              Your site blueprints, 3D interior renders, milestone tracking, and daily construction updates will appear here once your project commences.
+            </p>
+            <div className="client-empty-card__actions">
+              <Link to="/contact" className="btn btn--solid">
+                Book Initial Site Consultation
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* Active Projects List */}
         <div className="dash-stack">

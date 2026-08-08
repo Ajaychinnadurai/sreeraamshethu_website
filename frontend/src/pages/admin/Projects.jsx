@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Upload, Image as ImageIcon, Trash2 } from "lucide-react";
 import Seo from "../../components/Seo";
 import { api, mediaUrl } from "../../services/api";
-import { ARCHITECTURAL_PROJECTS } from "../../data/projectsData";
 
 const empty = {
   title: "",
@@ -23,6 +22,7 @@ const empty = {
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [form, setForm] = useState(empty);
   const [coverFile, setCoverFile] = useState(null);
@@ -37,17 +37,20 @@ export default function AdminProjects() {
       .get("/projects/admin/projects/")
       .then((res) => {
         const d = Array.isArray(res.data) ? res.data : res.data.results || [];
-        setProjects(d.length > 0 ? d : ARCHITECTURAL_PROJECTS);
+        setProjects(d);
+        setLoading(false);
       })
       .catch(() => {
         api
           .get("/projects/")
           .then((res) => {
             const d = Array.isArray(res.data) ? res.data : res.data.results || [];
-            setProjects(d.length > 0 ? d : ARCHITECTURAL_PROJECTS);
+            setProjects(d);
+            setLoading(false);
           })
           .catch(() => {
-            setProjects(ARCHITECTURAL_PROJECTS);
+            setProjects([]);
+            setLoading(false);
           });
       });
   };
@@ -62,20 +65,20 @@ export default function AdminProjects() {
       category: p.category || "Residential",
       location: p.location || "Rameswaram, Tamil Nadu",
       year: p.year || new Date().getFullYear(),
-      short_description: p.short_description || p.summary || "",
-      overview: p.overview || p.description || "",
+      short_description: p.short_description || "",
+      overview: p.overview || "",
       design_concept: p.design_concept || "",
       materials: p.materials || "",
       status: p.status || "Planning",
-      completion_percentage: p.completion_percentage || 100,
-      current_phase: p.current_phase || "Completed",
+      completion_percentage: p.completion_percentage || 0,
+      current_phase: p.current_phase || "",
       featured: p.featured || false,
       is_public: p.is_public !== false,
     });
     setCoverFile(null);
-    setCoverPreview(p.image || (p.cover_image ? mediaUrl(p.cover_image) : null));
+    setCoverPreview(p.cover_image ? mediaUrl(p.cover_image) : null);
     setHeroFile(null);
-    setHeroPreview(p.hero_image ? mediaUrl(p.hero_image) : (p.image || null));
+    setHeroPreview(p.hero_image ? mediaUrl(p.hero_image) : null);
     setMsg("");
   };
 
@@ -126,46 +129,34 @@ export default function AdminProjects() {
 
       let res;
       if (selected.id) {
-        try {
-          res = await api.patch(`/projects/admin/projects/${selected.id}/`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-          setSelected(res.data);
-        } catch {
-          // Local fallback update
-          const updated = projects.map((p) => (p.id === selected.id ? { ...p, ...form } : p));
-          setProjects(updated);
-        }
+        res = await api.patch(`/projects/admin/projects/${selected.id}/`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        setSelected(res.data);
       } else {
-        try {
-          res = await api.post("/projects/admin/projects/", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-          setSelected(res.data);
-        } catch {
-          const newProj = { id: Date.now(), ...form, image: coverPreview || "/hero_architectural_bg.png" };
-          setProjects([newProj, ...projects]);
-          setSelected(newProj);
-        }
+        res = await api.post("/projects/admin/projects/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        setSelected(res.data);
       }
-      setMsg("Saved project successfully.");
+      setMsg("Saved project and uploaded images to database successfully.");
       load();
     } catch (err) {
-      setMsg("Saved locally: Project updated.");
+      setMsg("Save failed: " + (err.response?.data?.detail || "Database validation error"));
     } finally {
       setSaving(false);
     }
   };
 
   const del = async (id) => {
-    if (!window.confirm("Delete this project?")) return;
+    if (!window.confirm("Delete this project from database?")) return;
     try {
       await api.delete(`/projects/admin/projects/${id}/`);
+      setSelected(null);
+      load();
     } catch {
-      /* ignore */
+      setMsg("Delete failed.");
     }
-    setProjects(projects.filter((p) => p.id !== id));
-    setSelected(null);
   };
 
   return (
@@ -175,13 +166,18 @@ export default function AdminProjects() {
         <header className="dash-head">
           <div>
             <h1 className="dash-title">Projects Catalogue</h1>
-            <p className="muted">{projects.length} project(s) in database.</p>
+            <p className="muted">{projects.length} real project(s) in live database.</p>
           </div>
           <button className="btn btn--solid" onClick={create}>+ New project</button>
         </header>
 
+        {loading && <div className="muted">Loading projects from live database...</div>}
+
         <div className="dash-cols admin-projects">
           <section className="dash-card admin-projects__list">
+            {projects.length === 0 && !loading && (
+              <p className="muted" style={{ padding: "1rem" }}>No projects created in database yet. Click "+ New project" to add your first real project.</p>
+            )}
             {projects.map((p) => (
               <button
                 key={p.id}
@@ -189,9 +185,9 @@ export default function AdminProjects() {
                 onClick={() => edit(p)}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
-                  {p.cover_image || p.image ? (
+                  {p.cover_image ? (
                     <img
-                      src={p.image || mediaUrl(p.cover_image)}
+                      src={mediaUrl(p.cover_image)}
                       alt={p.title}
                       style={{ width: "36px", height: "36px", borderRadius: "6px", objectFit: "cover" }}
                     />
@@ -211,7 +207,7 @@ export default function AdminProjects() {
             <h2 className="dash-card__title">
               {selected ? (selected.id ? "Edit project" : "New project") : "Select a project"}
             </h2>
-            {msg && <div className="form-note form-note--ok">{msg}</div>}
+            {msg && <div className={`form-note ${msg.startsWith("Saved") ? "form-note--ok" : "form-note--err"}`}>{msg}</div>}
             {selected && (
               <form onSubmit={save} className="admin-form">
                 <div className="form-row">

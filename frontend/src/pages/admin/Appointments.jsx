@@ -4,13 +4,9 @@ import { api } from "../../services/api";
 
 const STATUSES = ["Pending", "Approved", "Rescheduled", "Cancelled", "Completed"];
 
-const DEFAULT_APPOINTMENTS = [
-  { id: 1, full_name: "Ravi Kumar", date: "2026-08-15", time_slot: "11:00 AM", purpose: "Site Walkthrough & Blueprint Review", notes: "Client requested detailed review of structural foundation and interior electrical layout.", status: "Approved" },
-  { id: 2, full_name: "Meera Raman", date: "2026-08-18", time_slot: "02:30 PM", purpose: "Initial Villa Construction Consultation", notes: "Discussion regarding architectural plan, timber finishes, and estimated budget.", status: "Pending" },
-];
-
 export default function AdminAppointments() {
-  const [items, setItems] = useState(DEFAULT_APPOINTMENTS);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState(null);
 
   const load = () => {
@@ -18,10 +14,12 @@ export default function AdminAppointments() {
       .get("/appointments/")
       .then((res) => {
         const d = Array.isArray(res.data) ? res.data : res.data.results || [];
-        if (d.length > 0) setItems(d);
+        setItems(d);
+        setLoading(false);
       })
       .catch(() => {
-        setItems(DEFAULT_APPOINTMENTS);
+        setItems([]);
+        setLoading(false);
       });
   };
 
@@ -32,11 +30,11 @@ export default function AdminAppointments() {
   const setStatus = async (id, status) => {
     try {
       await api.patch(`/appointments/${id}/`, { status });
+      setMsg({ text: "Appointment status updated.", ok: true });
+      load();
     } catch {
-      /* ignore */
+      setMsg({ text: "Update failed.", ok: false });
     }
-    setItems((prev) => prev.map((a) => (a.id === id ? { ...a, status } : a)));
-    setMsg({ text: "Status updated.", ok: true });
   };
 
   return (
@@ -45,11 +43,12 @@ export default function AdminAppointments() {
       <div className="dash-pad">
         <header className="dash-head">
           <h1 className="dash-title">Appointments</h1>
-          <p className="muted">Approve, reschedule or cancel bookings.</p>
+          <p className="muted">{items.length} appointment(s) in database.</p>
         </header>
         {msg && <div className={`form-note ${msg.ok ? "form-note--ok" : "form-note--err"}`}>{msg.text}</div>}
+        {loading && <div className="muted">Loading appointments from database...</div>}
         <div className="dash-card">
-          {items.length === 0 && <p className="muted">No appointments.</p>}
+          {items.length === 0 && !loading && <p className="muted">No appointments booked in database yet.</p>}
           {items.map((a) => (
             <div key={a.id} className="row-item row-item--wrap">
               <div>
