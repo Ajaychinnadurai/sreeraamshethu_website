@@ -9,7 +9,7 @@ const API_BASE =
 
 export const api = axios.create({
   baseURL: API_BASE,
-  timeout: 8000,
+  timeout: 12000,
 });
 
 let accessToken = localStorage.getItem("access") || null;
@@ -21,7 +21,7 @@ export const setAccessToken = (token) => {
 };
 
 api.interceptors.request.use((config) => {
-  if (accessToken) {
+  if (accessToken && !accessToken.startsWith("demo-")) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
@@ -34,7 +34,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !original._retry && !original.url?.includes("/auth/login/")) {
       original._retry = true;
       const refresh = localStorage.getItem("refresh");
-      if (refresh && refresh !== "demo-admin-refresh-token") {
+      if (refresh && !refresh.startsWith("demo-")) {
         try {
           const { data } = await axios.post(`${API_BASE}/auth/refresh/`, {
             refresh,
