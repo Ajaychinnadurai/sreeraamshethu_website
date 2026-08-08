@@ -84,6 +84,14 @@ export function AuthProvider({ children }) {
   );
 
   const refreshUser = useCallback(async () => {
+    const tok = localStorage.getItem("access");
+    if (!tok || tok.startsWith("demo-")) {
+      try {
+        return JSON.parse(localStorage.getItem(USER_KEY) || "null");
+      } catch {
+        return null;
+      }
+    }
     try {
       const { data } = await api.get("/auth/me/");
       if (data) persistUser(data);
@@ -101,7 +109,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function bootstrap() {
       const tok = localStorage.getItem("access");
-      if (tok) {
+      if (tok && !tok.startsWith("demo-")) {
         setAccessToken(tok);
         try {
           const u = await refreshUser();
