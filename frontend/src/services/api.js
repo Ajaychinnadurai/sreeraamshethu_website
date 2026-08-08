@@ -9,6 +9,7 @@ const API_BASE =
 
 export const api = axios.create({
   baseURL: API_BASE,
+  timeout: 8000,
 });
 
 let accessToken = localStorage.getItem("access") || null;
