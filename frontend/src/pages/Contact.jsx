@@ -74,7 +74,7 @@ export default function Contact() {
             <Reveal>
               <h2 className="pd-h">Office</h2>
               <div className="contact-line"><span className="muted">Location</span><strong>Rameshwaram, Tamil Nadu, India</strong></div>
-              <div className="contact-line"><span className="muted">Phone</span><a className="focus-ring" href="tel:+919000000000">+91 90000 00000</a></div>
+              <div className="contact-line"><span className="muted">Phone</span><a className="focus-ring" href="tel:+919566615030">+91 95666 15030</a></div>
               <div className="contact-line"><span className="muted">Email</span><a className="focus-ring" href="mailto:hello@sreeraamshethu.com">hello@sreeraamshethu.com</a></div>
               <h2 className="pd-h">Working hours</h2>
               <div className="contact-line"><span className="muted">Mon – Sat</span><strong>9:00 AM – 7:00 PM</strong></div>

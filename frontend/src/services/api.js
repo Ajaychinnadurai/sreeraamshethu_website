@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+// Default backend API URL for local vs production deployment
+const API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  (import.meta.env.DEV
+    ? "/api"
+    : "https://sreeraamshethu-backend.onrender.com/api");
 
 export const api = axios.create({
   baseURL: API_BASE,
@@ -62,7 +67,9 @@ export function mediaUrl(path) {
   
   const base =
     import.meta.env.VITE_API_ORIGIN ||
-    (import.meta.env.DEV ? "http://localhost:8000" : window.location.origin);
+    (import.meta.env.DEV
+      ? "http://localhost:8000"
+      : "https://sreeraamshethu-backend.onrender.com");
     
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
   return `${base}${cleanPath}`;

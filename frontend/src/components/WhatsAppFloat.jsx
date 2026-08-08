@@ -6,7 +6,7 @@ import { MessageCircle } from "lucide-react";
  */
 export default function WhatsAppFloat() {
   const config = useSiteConfig();
-  const number = config?.whatsapp || "+919000000000";
+  const number = config?.whatsapp || "+919566615030";
   const msg =
     "Hello, I am interested in a construction/interior project in Rameshwaram. I would like to discuss my requirements.";
   const href = `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(msg)}`;

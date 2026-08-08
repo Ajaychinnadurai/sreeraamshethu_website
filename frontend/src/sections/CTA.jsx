@@ -20,7 +20,7 @@ export default function CTA() {
           <Button to="/contact" className="cta__btn-primary">
             Start a Project
           </Button>
-          <Button href="tel:+919000000000" variant="outline" className="cta__btn-secondary">
+          <Button href="tel:+919566615030" variant="outline" className="cta__btn-secondary">
             Call Us
           </Button>
         </Reveal>

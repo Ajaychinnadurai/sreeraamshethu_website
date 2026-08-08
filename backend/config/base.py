@@ -118,15 +118,20 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
+CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", default=True)
 CORS_ALLOWED_ORIGINS = env.list(
     "CORS_ALLOWED_ORIGINS",
-    default=["http://localhost:5173", "http://127.0.0.1:5173"],
+    default=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://frontend-seven-jade-63.vercel.app",
+    ],
 )
 CORS_ALLOW_CREDENTIALS = True
 
 # WhatsApp / contact configuration (overridable via env)
-WHATSAPP_NUMBER = env.str("WHATSAPP_NUMBER", default="+919000000000")
-CONTACT_PHONE = env.str("CONTACT_PHONE", default="+91 90000 00000")
+WHATSAPP_NUMBER = env.str("WHATSAPP_NUMBER", default="+919566615030")
+CONTACT_PHONE = env.str("CONTACT_PHONE", default="+91 95666 15030")
 CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="hello@sreeraamshethu.com")
 
 # Integrations (placeholder, configured via env in production)

@@ -66,7 +66,7 @@ export default function Footer() {
           <p>Rameshwaram,</p>
           <p>Tamil Nadu, India</p>
           <p className="footer__spacer" />
-          <p className="muted">Phone: +91 90000 00000</p>
+          <p className="muted">Phone: +91 95666 15030</p>
           <p className="muted">Email: hello@sreeraamshethu.com</p>
         </div>
       </div>
