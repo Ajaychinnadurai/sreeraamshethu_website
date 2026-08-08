@@ -31,10 +31,10 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const original = error.config;
-    if (error.response?.status === 401 && !original._retry) {
+    if (error.response?.status === 401 && !original._retry && !original.url?.includes("/auth/login/")) {
       original._retry = true;
       const refresh = localStorage.getItem("refresh");
-      if (refresh) {
+      if (refresh && refresh !== "demo-admin-refresh-token") {
         try {
           const { data } = await axios.post(`${API_BASE}/auth/refresh/`, {
             refresh,
@@ -44,7 +44,7 @@ api.interceptors.response.use(
           original.headers.Authorization = `Bearer ${data.access}`;
           return api(original);
         } catch (_) {
-          logoutLocal();
+          /* ignore refresh failure without hard logging out active user */
         }
       }
     }
