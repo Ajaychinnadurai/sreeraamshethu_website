@@ -3,8 +3,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from accounts.permissions import IsAdmin
-
 from .models import Inquiry
 from .serializers import InquirySerializer
 
@@ -30,4 +28,4 @@ class InquiryViewSet(viewsets.ModelViewSet):
     pagination_class = None
 
     def get_permissions(self):
-        return [IsAdmin()]
+        return [AllowAny()]

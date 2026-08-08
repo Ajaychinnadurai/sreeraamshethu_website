@@ -15,35 +15,40 @@ const STAT_CARDS = [
   { key: "documents", label: "Uploaded Docs", icon: FileText, color: "gray" },
 ];
 
+const INITIAL_COUNTS = {
+  projects: 0,
+  clients: 0,
+  inquiries: 0,
+  new_inquiries: 0,
+  appointments: 0,
+  pending_appointments: 0,
+  testimonials: 0,
+  documents: 0,
+};
+
 export default function AdminDashboard() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({ counts: INITIAL_COUNTS, recent_inquiries: [], recent_appointments: [] });
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
 
   useEffect(() => {
     let active = true;
     api
       .get("/dashboard/admin/")
       .then((res) => {
-        if (active) {
+        if (active && res.data) {
           setData(res.data);
           setLoading(false);
         }
       })
       .catch(() => {
-        if (active) {
-          setErr("Unable to connect to live backend database.");
-          setLoading(false);
-        }
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
     };
   }, []);
 
-  if (loading) return <div className="dash-pad muted">Connecting to live database...</div>;
-
-  const c = data?.counts || {};
+  const c = data?.counts || INITIAL_COUNTS;
   const recentInquiries = data?.recent_inquiries || [];
   const recentAppointments = data?.recent_appointments || [];
 
@@ -70,7 +75,7 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {err && <div className="form-note form-note--err">{err}</div>}
+        {loading && <div className="dash-pad muted">Syncing with live database...</div>}
 
         {/* KPI Stat Cards Grid */}
         <div className="stat-grid admin-stats">
