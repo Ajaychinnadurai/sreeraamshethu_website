@@ -19,6 +19,9 @@ class TestimonialViewSet(viewsets.ModelViewSet):
         return [IsAdmin()]
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated or not (self.request.user.is_admin() or self.request.user.is_staff):
+        user = self.request.user
+        if not user or not user.is_authenticated:
             return Testimonial.objects.filter(is_published=True)
-        return super().get_queryset()
+        if getattr(user, "is_staff", False) or getattr(user, "is_superuser", False) or getattr(user, "role", "") == "ADMIN":
+            return Testimonial.objects.all()
+        return Testimonial.objects.filter(is_published=True)
