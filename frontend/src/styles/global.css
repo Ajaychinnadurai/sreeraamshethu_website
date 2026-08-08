@@ -1,0 +1,230 @@
+:root {
+  --teal-btn: #D99B21; /* Gold accent matching reference screenshot */
+  --teal-btn-hover: #B8962E;
+  --navy: #0A1128;
+  --navy-light: #162244;
+  --bg: #FAFAF8;
+  --bg-2: #FAFAF8;
+  --surface: #FFFFFF;
+  --line: rgba(10, 17, 40, 0.08);
+  --text: #1c1c1e;
+  --muted: #5e5e65;
+  --accent: #D99B21;
+  --gold: #D99B21;   /* Gold Accent */
+  --gold-hover: #B8962E;
+  --cyan: #0A1128;
+  --sand: #F2F2F7;
+  --light-bg: #F2F2F7;
+  --light-text: #1c1c1e;
+  --font-display: "Montserrat", sans-serif;
+  --font-heading: "Montserrat", sans-serif;
+  --font-body: "Montserrat", sans-serif;
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --nav-h: 4.2rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.91rem; /* 14.5px matching reference screenshot */
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--navy);
+  color: #ffffff;
+}
+
+h1 {
+  font-size: 1.75rem; /* 28px */
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 1.2rem; /* 19.2px */
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: 1rem; /* 16px */
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--navy);
+}
+
+.display {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3.2vw, 2.25rem); /* Montserrat 800 ExtraBold 28px-36px */
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
+.section {
+  padding-top: clamp(3.5rem, 8vw, 6.5rem);
+  padding-bottom: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.gutter {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 700;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.8rem;
+  height: 2px;
+  background: var(--gold);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.accent {
+  color: var(--navy);
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.cyan {
+  color: var(--gold);
+}
+
+.text-light {
+  color: var(--light-text);
+}
+
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Reveal animation tokens used by Reveal component */
+.rv {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rv.is-visible {
+  opacity: 1;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+}
