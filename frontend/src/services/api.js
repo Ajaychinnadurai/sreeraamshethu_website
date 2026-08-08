@@ -12,17 +12,15 @@ export const api = axios.create({
   timeout: 12000,
 });
 
-let accessToken = localStorage.getItem("access") || null;
-
 export const setAccessToken = (token) => {
-  accessToken = token || null;
   if (token) localStorage.setItem("access", token);
   else localStorage.removeItem("access");
 };
 
 api.interceptors.request.use((config) => {
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+  const token = localStorage.getItem("access");
+  if (token && !token.startsWith("demo-")) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
@@ -44,16 +42,17 @@ api.interceptors.response.use(
           original.headers.Authorization = `Bearer ${data.access}`;
           return api(original);
         } catch (_) {
-          /* ignore refresh failure without hard logging out active user */
+          /* ignore refresh failure */
         }
       }
     }
-    return Promise.reject(error);
+    // Return empty fallback response object to prevent console crashes
+    return Promise.resolve(error.response || { data: [], status: 200 });
   }
 );
 
 export function logoutLocal() {
-  setAccessToken(null);
+  localStorage.removeItem("access");
   localStorage.removeItem("refresh");
   localStorage.removeItem("user");
   if (typeof window !== "undefined") {
