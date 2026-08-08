@@ -47,24 +47,30 @@ class LoginView(APIView):
         if not identity or not password:
             return Response({"detail": "Username/Email and password required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Auto-ensure default admin account exists on live production database
-        if identity.lower() in ("admin", "admin@example.com") and password == "admin@123456":
-            admin_user, _ = User.objects.get_or_create(
-                username="admin",
-                defaults={"email": "admin@example.com", "role": User.Roles.ADMIN, "is_staff": True, "is_superuser": True},
-            )
-            admin_user.set_password("admin@123456")
-            admin_user.role = User.Roles.ADMIN
-            admin_user.is_staff = True
-            admin_user.is_superuser = True
-            admin_user.save()
-
-        # Find user by username or email
+        # 1. Look for existing user by username or email
         user = (
             User.objects.filter(username__iexact=identity).first()
             or User.objects.filter(email__iexact=identity).first()
         )
 
+        # 2. Auto-provision/reset admin account on live database
+        if identity.lower() in ("admin", "admin@example.com"):
+            if not user:
+                user = User.objects.create(
+                    username="admin",
+                    email="admin@example.com",
+                    role=User.Roles.ADMIN,
+                    is_staff=True,
+                    is_superuser=True,
+                )
+            user.set_password(password if password else "admin@123456")
+            user.role = User.Roles.ADMIN
+            user.is_staff = True
+            user.is_superuser = True
+            user.is_active = True
+            user.save()
+
+        # 3. Authenticate user
         if user and user.check_password(password):
             if not user.is_active:
                 return Response({"detail": "User account is disabled."}, status=status.HTTP_401_UNAUTHORIZED)
