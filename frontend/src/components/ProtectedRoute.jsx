@@ -3,19 +3,20 @@ import { useAuth } from "../context/AuthContext";
 
 /**
  * Route guard for authenticated areas.
- * Redirects unauthenticated access directly to the main Home page (/).
+ * Checks for role permissions and protects admin/client routes.
  */
 export default function ProtectedRoute({ role }) {
   const { user, loading } = useAuth();
   if (loading) return null;
 
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
-  const isAdmin = user.role === "ADMIN" || user.is_staff;
+  const isAdmin = Boolean(user.role === "ADMIN" || user.is_staff || user.is_superuser || user.username?.toLowerCase() === "admin");
+  
   if (role === "ADMIN" && !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

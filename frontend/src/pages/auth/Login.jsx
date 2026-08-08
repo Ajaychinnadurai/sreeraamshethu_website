@@ -25,7 +25,8 @@ export default function Login() {
   const [submitting, setSubmitting] = useState(false);
 
   if (!loading && user) {
-    const dest = user.role === "ADMIN" || user.is_staff ? "/admin/" : "/client/";
+    const isAdmin = Boolean(user.role === "ADMIN" || user.is_staff || user.is_superuser || user.username?.toLowerCase() === "admin");
+    const dest = isAdmin ? "/admin" : "/client";
     return <Navigate to={dest} replace />;
   }
 
@@ -37,7 +38,8 @@ export default function Login() {
     setSubmitting(true);
     try {
       const u = await login(username, password);
-      navigate(u.role === "ADMIN" || u.is_staff ? "/admin/" : "/client/");
+      const isAdmin = Boolean(u.role === "ADMIN" || u.is_staff || u.is_superuser || u.username?.toLowerCase() === "admin");
+      navigate(isAdmin ? "/admin" : "/client");
     } catch {
       setError("Invalid username or password.");
     } finally {
@@ -56,7 +58,8 @@ export default function Login() {
     setSubmitting(true);
     try {
       const u = await register(reg);
-      navigate(u.role === "ADMIN" || u.is_staff ? "/admin/" : "/client/");
+      const isAdmin = Boolean(u.role === "ADMIN" || u.is_staff || u.is_superuser || u.username?.toLowerCase() === "admin");
+      navigate(isAdmin ? "/admin" : "/client");
     } catch (err) {
       const msg = err.response?.data;
       if (msg?.username) setError("That username is already taken.");

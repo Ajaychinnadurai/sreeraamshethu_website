@@ -68,12 +68,14 @@ export default function App() {
 
             <Route element={<ProtectedRoute role="CLIENT" />}>
               <Route element={<ClientLayout />}>
+                <Route path="/client" element={<ClientDashboard />} />
                 <Route path="/client/" element={<ClientDashboard />} />
               </Route>
             </Route>
 
             <Route element={<ProtectedRoute role="ADMIN" />}>
               <Route element={<AdminLayout />}>
+                <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/" element={<AdminDashboard />} />
                 <Route path="/admin/projects" element={<AdminProjects />} />
                 <Route path="/admin/clients" element={<AdminClients />} />
