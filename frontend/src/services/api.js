@@ -21,7 +21,7 @@ export const setAccessToken = (token) => {
 };
 
 api.interceptors.request.use((config) => {
-  if (accessToken && !accessToken.startsWith("demo-")) {
+  if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
