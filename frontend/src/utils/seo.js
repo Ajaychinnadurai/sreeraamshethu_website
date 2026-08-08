@@ -1,6 +1,6 @@
 export const SITE_NAME = "Sree Raam Shethu Constructions & Interiors";
-export const SITE_URL = "https://www.sreeraamshethu.com";
-export const LOCATION = "Rameshwaram, Tamil Nadu, India";
+export const SITE_URL = "https://frontend-seven-jade-63.vercel.app";
+export const LOCATION = "12/15c Thulasi Baba Madam Street, Near to Lakshmana Theertham, Rameswaram - 623526, Tamil Nadu, India.";
 
 export function localBusinessSchema() {
   return {
@@ -8,14 +8,18 @@ export function localBusinessSchema() {
     "@type": "LocalBusiness",
     name: SITE_NAME,
     description:
-      "Construction company, builders and interior designers in Rameshwaram, Tamil Nadu offering residential, commercial, renovation and turnkey projects.",
+      "Civil construction company, builders and interior designers in Rameswaram, Tamil Nadu offering residential, commercial, renovation and turnkey projects.",
+    telephone: "+919566615030",
+    email: "sreeraamconstruction@gmail.com",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Rameshwaram",
+      streetAddress: "12/15c Thulasi Baba Madam Street, Near to Lakshmana Theertham",
+      addressLocality: "Rameswaram",
+      postalCode: "623526",
       addressRegion: "Tamil Nadu",
       addressCountry: "IN",
     },
-    areaServed: ["Rameshwaram", "Ramanathapuram", "Tamil Nadu"],
+    areaServed: ["Rameswaram", "Ramanathapuram", "Pamban", "Tamil Nadu"],
     url: SITE_URL,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
@@ -38,7 +42,16 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    address: { "@type": "PostalAddress", addressLocality: "Rameshwaram", addressRegion: "Tamil Nadu", addressCountry: "IN" },
+    telephone: "+919566615030",
+    email: "sreeraamconstruction@gmail.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "12/15c Thulasi Baba Madam Street, Near to Lakshmana Theertham",
+      addressLocality: "Rameswaram",
+      postalCode: "623526",
+      addressRegion: "Tamil Nadu",
+      addressCountry: "IN",
+    },
   };
 }
 
@@ -46,9 +59,9 @@ export function serviceSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Construction & Interior Services in Rameshwaram",
+    name: "Construction & Interior Services in Rameswaram",
     provider: { "@type": "Organization", name: SITE_NAME },
-    areaServed: { "@type": "City", name: "Rameshwaram" },
+    areaServed: { "@type": "City", name: "Rameswaram" },
     serviceType: [
       "Construction",
       "Interior Design",
@@ -76,9 +89,9 @@ export function productSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: "Construction & Interior Services, Rameshwaram",
+    name: "Construction & Interior Services, Rameswaram",
     description:
-      "Residential, commercial, interior design, renovation and turnkey construction services in Rameshwaram, Tamil Nadu.",
+      "Residential, commercial, interior design, renovation and turnkey construction services in Rameswaram, Tamil Nadu.",
     brand: { "@type": "Brand", name: SITE_NAME },
   };
 }

@@ -12,7 +12,7 @@ const initial = {
   phone: "",
   email: "",
   project_type: "Residential",
-  location: "Rameshwaram",
+  location: "Rameswaram",
   budget: "",
   project_description: "",
 };
@@ -54,14 +54,14 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Contact Sree Raam Shethu Constructions & Interiors | Rameshwaram"
-        description="Get in touch with Sree Raam Shethu Constructions & Interiors in Rameshwaram, Tamil Nadu. Request a construction or interior quotation for residential, commercial, renovation and turnkey projects."
+        title="Contact Sree Raam Shethu Constructions & Interiors | Rameswaram"
+        description="Get in touch with Sree Raam Shethu Constructions & Interiors in Rameswaram, Tamil Nadu. Request a construction or interior quotation for residential, commercial, renovation and turnkey projects."
         canonical={`${SITE_URL}/contact`}
         jsonLd={[breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]), localBusinessSchema()]}
       />
       <section className="page-hero">
         <div className="container page-hero__inner">
-          <Reveal><span className="eyebrow">Contact</span></Reveal>
+          <Reveal><span className="eyebrow">Contact Us</span></Reveal>
           <Reveal delay={0.1}>
             <h1 className="display page-hero__title">Let's plan your <span className="accent">next build.</span></h1>
           </Reveal>
@@ -72,19 +72,26 @@ export default function Contact() {
         <div className="container contact-grid">
           <div className="contact-info">
             <Reveal>
-              <h2 className="pd-h">Office</h2>
-              <div className="contact-line"><span className="muted">Location</span><strong>Rameshwaram, Tamil Nadu, India</strong></div>
+              <h2 className="pd-h">Office Address</h2>
+              <div className="contact-line" style={{ alignItems: "flex-start" }}>
+                <span className="muted">Address</span>
+                <strong>
+                  12/15c Thulasi Baba Madam Street,<br />
+                  Near to Lakshmana Theertham,<br />
+                  Rameswaram - 623526, Tamil Nadu, India.
+                </strong>
+              </div>
               <div className="contact-line"><span className="muted">Phone</span><a className="focus-ring" href="tel:+919566615030">+91 95666 15030</a></div>
-              <div className="contact-line"><span className="muted">Email</span><a className="focus-ring" href="mailto:hello@sreeraamshethu.com">hello@sreeraamshethu.com</a></div>
-              <h2 className="pd-h">Working hours</h2>
+              <div className="contact-line"><span className="muted">Email</span><a className="focus-ring" href="mailto:sreeraamconstruction@gmail.com">sreeraamconstruction@gmail.com</a></div>
+              <h2 className="pd-h" style={{ marginTop: "2rem" }}>Working Hours</h2>
               <div className="contact-line"><span className="muted">Mon – Sat</span><strong>9:00 AM – 7:00 PM</strong></div>
               <div className="contact-line"><span className="muted">Sunday</span><strong>By appointment</strong></div>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="map-frame">
+              <div className="map-frame" style={{ marginTop: "1.8rem" }}>
                 <iframe
-                  title="Sree Raam Shethu Constructions & Interiors — Rameshwaram"
-                  src="https://www.google.com/maps/embed?pb=Rameswaram"
+                  title="Sree Raam Shethu Constructions & Interiors — Rameswaram"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15747.781896805822!2d79.3000!3d9.2880!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b01e3b692080001%3A0x8e5f2081f2115160!2sLakshmana%20Theertham%2C%20Rameswaram%2C%20Tamil%20Nadu%20623526!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
@@ -111,7 +118,7 @@ export default function Contact() {
                 </div>
                 <div className="field">
                   <label htmlFor="phone">Phone Number</label>
-                  <input id="phone" className="focus-ring" value={form.phone} onChange={set("phone")} placeholder="+91 ..." />
+                  <input id="phone" className="focus-ring" value={form.phone} onChange={set("phone")} placeholder="+91 95666 15030" />
                   {errors.phone && <span className="field-err">{errors.phone}</span>}
                 </div>
               </div>
@@ -131,7 +138,7 @@ export default function Contact() {
               <div className="form-row">
                 <div className="field">
                   <label htmlFor="location">Location</label>
-                  <input id="location" className="focus-ring" value={form.location} onChange={set("location")} placeholder="Where is the project?" />
+                  <input id="location" className="focus-ring" value={form.location} onChange={set("location")} placeholder="Rameswaram" />
                 </div>
                 <div className="field">
                   <label htmlFor="budget">Estimated Budget</label>

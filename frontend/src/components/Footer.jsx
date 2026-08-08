@@ -31,7 +31,7 @@ export default function Footer() {
           </div>
           <p className="footer__tagline muted">
             Building spaces that define tomorrow — from structural foundations to refined
-            interiors in Rameshwaram, Tamil Nadu.
+            interiors in Rameswaram, Tamil Nadu.
           </p>
         </div>
 
@@ -62,12 +62,19 @@ export default function Footer() {
         </div>
 
         <div className="footer__col">
-          <h4 className="footer__head">Location</h4>
-          <p>Rameshwaram,</p>
-          <p>Tamil Nadu, India</p>
+          <h4 className="footer__head">Office Address</h4>
+          <p style={{ fontSize: "0.88rem", lineHeight: "1.5", color: "rgba(255,255,255,0.85)" }}>
+            12/15c Thulasi Baba Madam Street,<br />
+            Near to Lakshmana Theertham,<br />
+            Rameswaram - 623526, Tamil Nadu, India.
+          </p>
           <p className="footer__spacer" />
-          <p className="muted">Phone: +91 95666 15030</p>
-          <p className="muted">Email: hello@sreeraamshethu.com</p>
+          <p className="muted" style={{ fontSize: "0.88rem", marginTop: "0.4rem" }}>
+            Phone: <a href="tel:+919566615030" style={{ color: "inherit", textDecoration: "none" }}>+91 95666 15030</a>
+          </p>
+          <p className="muted" style={{ fontSize: "0.88rem", marginTop: "0.2rem" }}>
+            Email: <a href="mailto:sreeraamconstruction@gmail.com" style={{ color: "inherit", textDecoration: "none" }}>sreeraamconstruction@gmail.com</a>
+          </p>
         </div>
       </div>
       <div className="container footer__bottom">
