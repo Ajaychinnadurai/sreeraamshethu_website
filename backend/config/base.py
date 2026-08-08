@@ -7,9 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-SECRET_KEY = env.str("SECRET_KEY", default="django-insecure-dev-only-change-me")
-DEBUG = env.bool("DEBUG", default=True)
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=["*", ".onrender.com", "sreeraamshethu-website.onrender.com", "localhost", "127.0.0.1"],
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
