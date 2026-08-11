@@ -8,16 +8,22 @@ import WhyChooseUs from "../sections/WhyChooseUs";
 import Testimonials from "../sections/Testimonials";
 import CTA from "../sections/CTA";
 import Seo from "../components/Seo";
-import { localBusinessSchema, organizationSchema, serviceSchema, SITE_URL } from "../utils/seo";
+import {
+  localBusinessSchema,
+  organizationSchema,
+  serviceSchema,
+  websiteSchema,
+  SITE_URL,
+} from "../utils/seo";
 
 export default function Home() {
   return (
     <>
       <Seo
-        title="Sree Raam Shethu Constructions & Interiors | Builders & Interior Designers in Rameshwaram"
-        description="Construction company, builders and interior designers in Rameshwaram, Tamil Nadu. Residential construction, commercial construction, interior design, renovation and turnkey projects."
+        title="Civil Contractor & Interior Designer in Rameswaram | Sree Raam Shethu Constructions"
+        description="Sree Raam Shethu Constructions & Interiors — trusted civil construction company in Rameswaram, Tamil Nadu. House construction, building repair, renovation, waterproofing, interior design, modular kitchen and turnkey projects. Call +91 95666 15030."
         canonical={`${SITE_URL}/`}
-        jsonLd={[localBusinessSchema(), organizationSchema(), serviceSchema()]}
+        jsonLd={[localBusinessSchema(), organizationSchema(), serviceSchema(), websiteSchema()]}
       />
       <Hero />
       <TrustIntro />

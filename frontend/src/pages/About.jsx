@@ -4,7 +4,7 @@ import SectionHeading from "../components/SectionHeading";
 import Counter from "../components/Counter";
 import TrustIntro from "../sections/TrustIntro";
 import CTA from "../sections/CTA";
-import { localBusinessSchema, breadcrumbSchema, organizationSchema, SITE_URL } from "../utils/seo";
+import { localBusinessSchema, breadcrumbSchema, organizationSchema, personSchema, SITE_URL } from "../utils/seo";
 
 const VALUES = [
   "Integrity in every contract.",
@@ -17,18 +17,34 @@ export default function About() {
   return (
     <>
       <Seo
-        title="About Sree Raam Shethu Constructions & Interiors | Builders in Rameshwaram"
-        description="Learn about Sree Raam Shethu Constructions & Interiors — a construction and interior design company in Rameshwaram, Tamil Nadu delivering residential, commercial, renovation and turnkey projects."
+        title="About Sree Raam Shethu Constructions & Interiors | Civil Contractor in Rameswaram"
+        description="Sree Raam Shethu Constructions & Interiors is a civil construction company in Rameswaram, Tamil Nadu led by S.M. Sethu Pandian B.E. (Civil). Residential construction, commercial construction, renovation and turnkey interior projects."
         canonical={`${SITE_URL}/about`}
-        jsonLd={[breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }]), organizationSchema()]}
+        jsonLd={[
+          breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }]),
+          organizationSchema(),
+          personSchema(),
+        ]}
       />
       <section className="page-hero">
         <div className="container page-hero__inner">
-          <Reveal><span className="eyebrow">About us</span></Reveal>
+          <Reveal><span className="eyebrow">About Us</span></Reveal>
           <Reveal delay={0.1}>
+            {/*
+             * H1 now includes "Civil Construction Company" + location.
+             * Previous H1 had no service keyword.
+             */}
             <h1 className="display page-hero__title">
-              Rooted in Rameshwaram, <br /><span className="accent">built for generations.</span>
+              Civil Construction in Rameswaram,{" "}
+              <span className="accent">built for generations.</span>
             </h1>
+          </Reveal>
+          <Reveal delay={0.18}>
+            <p className="page-hero__desc">
+              Sree Raam Shethu Constructions &amp; Interiors — a civil engineering
+              and interior company rooted in Rameswaram, delivering quality construction
+              across Ramanathapuram district, Tamil Nadu.
+            </p>
           </Reveal>
         </div>
       </section>

@@ -1,0 +1,27 @@
+# robots.txt — Sree Raam Shethu Constructions & Interiors
+# https://sreeraamshethu.com
+
+User-agent: *
+Allow: /
+
+# Block private/admin areas
+Disallow: /admin/
+Disallow: /admin
+Disallow: /client/
+Disallow: /client
+Disallow: /api/
+
+# Block auth pages from indexing (no SEO value)
+Disallow: /login
+Disallow: /admin/login
+
+# Allow CSS, JS, images — important for rendering
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+
+# Sitemap
+Sitemap: https://sreeraamshethu.com/sitemap.xml
+
+# Crawl-delay hint for polite bots
+Crawl-delay: 2

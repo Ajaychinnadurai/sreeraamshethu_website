@@ -20,8 +20,12 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     target: "es2020",
+    // CSS code splitting — each chunk gets its own CSS file for better caching
+    cssCodeSplit: true,
+    cssMinify: true,
     rollupOptions: {
       output: {
+        // Manual chunks — separates heavy vendor libraries for better cache efficiency
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("framer-motion")) return "framer-motion";

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import { api, mediaUrl } from "../services/api";
-import { breadcrumbSchema, SITE_URL } from "../utils/seo";
+import { breadcrumbSchema, projectListSchema, SITE_URL } from "../utils/seo";
 import { ARCHITECTURAL_PROJECTS } from "../data/projectsData";
 
 const CATEGORIES = ["All", "Residential", "Commercial", "Interiors", "Renovation"];
@@ -65,10 +65,13 @@ export default function Projects() {
   return (
     <>
       <Seo
-        title="Architectural Projects | Sree Raam Shethu Constructions & Interiors, Rameshwaram"
-        description="Explore luxury residential, commercial, interior and renovation projects by Sree Raam Shethu Constructions & Interiors in Rameshwaram, Tamil Nadu."
+        title="Construction Projects in Rameswaram | Sree Raam Shethu Constructions & Interiors"
+        description="Explore completed residential, commercial, interior design and renovation projects by Sree Raam Shethu Constructions & Interiors in Rameswaram, Tamil Nadu. House builds, lodge construction, interior fit-outs and renovation works."
         canonical={`${SITE_URL}/projects`}
-        jsonLd={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Projects", path: "/projects" }])}
+        jsonLd={[
+          breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Projects", path: "/projects" }]),
+          projectListSchema(filtered.length > 0 ? filtered : ARCHITECTURAL_PROJECTS),
+        ]}
       />
 
       {/* Page Hero */}
@@ -77,13 +80,25 @@ export default function Projects() {
           <Reveal>
             <div className="page-hero__eyebrow-wrap">
               <span className="page-hero__eyebrow-line" />
-              <span className="eyebrow">ARCHITECTURAL PORTFOLIO</span>
+              <span className="eyebrow">Our Project Portfolio</span>
             </div>
           </Reveal>
           <Reveal delay={0.1}>
+            {/*
+             * H1 now includes "Construction Projects" + location "Rameswaram"
+             * Previous H1 was "Selected projects, crafted in Rameshwaram" — no service keyword.
+             */}
             <h1 className="display page-hero__title">
-              Selected projects, <span className="accent">crafted in Rameshwaram.</span>
+              Construction &amp; Interior Projects in{" "}
+              <span className="accent">Rameswaram</span>
             </h1>
+          </Reveal>
+          <Reveal delay={0.18}>
+            <p className="page-hero__desc">
+              Residential construction, commercial builds, interior design and renovation
+              projects completed by Sree Raam Shethu Constructions &amp; Interiors across
+              Rameswaram and Ramanathapuram district.
+            </p>
           </Reveal>
         </div>
       </section>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import { api } from "../services/api";
-import { breadcrumbSchema, localBusinessSchema, SITE_URL } from "../utils/seo";
+import { breadcrumbSchema, localBusinessSchema, SITE_URL, WHATSAPP } from "../utils/seo";
 
 const PROJECT_TYPES = ["Residential", "Commercial", "Interior", "Renovation", "Turnkey"];
 const BUDGETS = ["Under ₹25L", "₹25L – ₹50L", "₹50L – ₹1 Cr", "₹1 Cr – ₹2 Cr", "Above ₹2 Cr"];
@@ -54,8 +54,8 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Contact Sree Raam Shethu Constructions & Interiors | Rameswaram"
-        description="Get in touch with Sree Raam Shethu Constructions & Interiors in Rameswaram, Tamil Nadu. Request a construction or interior quotation for residential, commercial, renovation and turnkey projects."
+        title="Contact Sree Raam Shethu Constructions | Civil Contractor in Rameswaram"
+        description="Contact Sree Raam Shethu Constructions & Interiors in Rameswaram, Tamil Nadu. Request a free site visit and project estimate for house construction, building repair, renovation, waterproofing, interior design and all civil works. Call +91 95666 15030."
         canonical={`${SITE_URL}/contact`}
         jsonLd={[breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]), localBusinessSchema()]}
       />
@@ -63,7 +63,21 @@ export default function Contact() {
         <div className="container page-hero__inner">
           <Reveal><span className="eyebrow">Contact Us</span></Reveal>
           <Reveal delay={0.1}>
-            <h1 className="display page-hero__title">Let's plan your <span className="accent">next build.</span></h1>
+            {/*
+             * H1 now contains "construction" + location keyword.
+             * Previous: "Let's plan your next build." — no location, no keyword.
+             */}
+            <h1 className="display page-hero__title">
+              Start Your Project in{" "}
+              <span className="accent">Rameswaram</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.18}>
+            <p className="page-hero__desc">
+              Get a free consultation and project estimate for house construction,
+              building repair, renovation, waterproofing, or interior design in Rameswaram
+              and across Ramanathapuram district.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -82,10 +96,20 @@ export default function Contact() {
                 </strong>
               </div>
               <div className="contact-line"><span className="muted">Phone</span><a className="focus-ring" href="tel:+919566615030">+91 95666 15030</a></div>
+              <div className="contact-line"><span className="muted">WhatsApp</span><a className="focus-ring" href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hello, I am interested in a construction/interior project in Rameswaram. I would like to discuss my requirements.")}`} target="_blank" rel="noreferrer">Chat on WhatsApp</a></div>
               <div className="contact-line"><span className="muted">Email</span><a className="focus-ring" href="mailto:sreeraamconstruction@gmail.com">sreeraamconstruction@gmail.com</a></div>
               <h2 className="pd-h" style={{ marginTop: "2rem" }}>Working Hours</h2>
               <div className="contact-line"><span className="muted">Mon – Sat</span><strong>9:00 AM – 7:00 PM</strong></div>
               <div className="contact-line"><span className="muted">Sunday</span><strong>By appointment</strong></div>
+              <h2 className="pd-h" style={{ marginTop: "2rem" }}>Areas We Serve</h2>
+              <div className="contact-areas">
+                {["Rameswaram","Ramanathapuram","Pamban","Mandapam","Thiruvadanai","Arichalmunai"].map((area) => (
+                  <span key={area} className="area-chip">
+                    <span className="area-chip__dot" aria-hidden="true">●</span>
+                    <span>{area}</span>
+                  </span>
+                ))}
+              </div>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="map-frame" style={{ marginTop: "1.8rem" }}>
